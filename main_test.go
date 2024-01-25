@@ -13,50 +13,50 @@ func TestCanonicalMySQLDSN(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "custom port",
+			name:    "no port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc"},
 			want:    "tcp(mysql-demo.mysql.svc)/",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "no port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc/dbname"},
 			want:    "tcp(mysql-demo.mysql.svc)/dbname",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "no port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc/dbname?param=value"},
 			want:    "tcp(mysql-demo.mysql.svc)/dbname?param=value",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "no port",
 			args:    args{dsn: "tcp://username:password@mysql-demo.mysql.svc/dbname?param=value"},
 			want:    "username:password@tcp(mysql-demo.mysql.svc)/dbname?param=value",
 			wantErr: false,
 		},
 
 		{
-			name:    "custom port",
+			name:    "default port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc:3306"},
 			want:    "tcp(mysql-demo.mysql.svc:3306)/",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "default port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc:3306/dbname"},
 			want:    "tcp(mysql-demo.mysql.svc:3306)/dbname",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "default port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc:3306/dbname?param=value"},
 			want:    "tcp(mysql-demo.mysql.svc:3306)/dbname?param=value",
 			wantErr: false,
 		},
 		{
-			name:    "custom port",
+			name:    "default port",
 			args:    args{dsn: "tcp://username:password@mysql-demo.mysql.svc:3306/dbname?param=value"},
 			want:    "username:password@tcp(mysql-demo.mysql.svc:3306)/dbname?param=value",
 			wantErr: false,

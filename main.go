@@ -7,7 +7,6 @@ import (
 	"net/url"
 	"strings"
 )
-import _ "github.com/go-sql-driver/mysql"
 
 func main() {
 	cfg, err := mysql.ParseDSN("username:password@tcp(mysql-demo.mysql.svc:3306)/dbname?param=value")
