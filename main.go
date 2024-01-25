@@ -5,6 +5,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"net"
 	"net/url"
+	"strings"
 )
 import _ "github.com/go-sql-driver/mysql"
 
@@ -24,28 +25,29 @@ func main() {
 	//}
 }
 
-func CanonicalMySQLDSN(in string) (string, error) {
-	_, err := mysql.ParseDSN(in)
-	if err != nil {
-		return in, nil
+func CanonicalMySQLDSN(dsn string) (string, error) {
+	_, err := mysql.ParseDSN(dsn)
+	if err == nil {
+		return dsn, nil
 	}
-	URL, err := url.Parse(in)
+
+	u, err := url.Parse(dsn)
 	if err != nil {
 		return "", err
 	}
 
 	rebuild := mysql.NewConfig()
-	if URL.User != nil {
-		rebuild.User = URL.User.Username()
-		if pass, found := URL.User.Password(); found {
+	rebuild.Net = u.Scheme
+	rebuild.Addr = u.Host
+	rebuild.DBName = strings.TrimPrefix(u.Path, "/")
+	if u.User != nil {
+		rebuild.User = u.User.Username()
+		if pass, found := u.User.Password(); found {
 			rebuild.Passwd = pass
 		}
 	}
-	rebuild.Net = URL.Scheme
-	rebuild.Addr = URL.Host
-	rebuild.DBName = URL.Path
 	rebuild.Params = map[string]string{}
-	for k, v := range URL.Query() {
+	for k, v := range u.Query() {
 		rebuild.Params[k] = v[0]
 	}
 	return rebuild.FormatDSN(), nil
