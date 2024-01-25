@@ -12,25 +12,31 @@ func TestCanonicalMySQLDSN(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		//{
-		//	name:    "missing port",
-		//	args:    args{dsn: "username:password@tcp(mysql-demo.mysql.svc)/dbname?param=value"},
-		//	want:    "mysql-demo.mysql.svc",
-		//	wantErr: false,
-		//},
-		//{
-		//	name:    "default port",
-		//	args:    args{dsn: "username:password@tcp(mysql-demo.mysql.svc:3306)/dbname?param=value"},
-		//	want:    "mysql-demo.mysql.svc",
-		//	wantErr: false,
-		//},
-		//{
-		//	name:    "custom port",
-		//	args:    args{dsn: "username:password@tcp(mysql-demo.mysql.svc:1234)/dbname?param=value"},
-		//	want:    "mysql-demo.mysql.svc",
-		//	wantErr: false,
-		//},
-		// "tcp://mysql-demo.mysql.svc:3306"
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc"},
+			want:    "tcp(mysql-demo.mysql.svc)/",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc/dbname"},
+			want:    "tcp(mysql-demo.mysql.svc)/dbname",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc/dbname?param=value"},
+			want:    "tcp(mysql-demo.mysql.svc)/dbname?param=value",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://username:password@mysql-demo.mysql.svc/dbname?param=value"},
+			want:    "username:password@tcp(mysql-demo.mysql.svc)/dbname?param=value",
+			wantErr: false,
+		},
+
 		{
 			name:    "custom port",
 			args:    args{dsn: "tcp://mysql-demo.mysql.svc:3306"},
@@ -53,6 +59,31 @@ func TestCanonicalMySQLDSN(t *testing.T) {
 			name:    "custom port",
 			args:    args{dsn: "tcp://username:password@mysql-demo.mysql.svc:3306/dbname?param=value"},
 			want:    "username:password@tcp(mysql-demo.mysql.svc:3306)/dbname?param=value",
+			wantErr: false,
+		},
+
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc:1234"},
+			want:    "tcp(mysql-demo.mysql.svc:1234)/",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc:1234/dbname"},
+			want:    "tcp(mysql-demo.mysql.svc:1234)/dbname",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://mysql-demo.mysql.svc:1234/dbname?param=value"},
+			want:    "tcp(mysql-demo.mysql.svc:1234)/dbname?param=value",
+			wantErr: false,
+		},
+		{
+			name:    "custom port",
+			args:    args{dsn: "tcp://username:password@mysql-demo.mysql.svc:1234/dbname?param=value"},
+			want:    "username:password@tcp(mysql-demo.mysql.svc:1234)/dbname?param=value",
 			wantErr: false,
 		},
 	}
